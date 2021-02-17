@@ -1,7 +1,7 @@
 {
   "name": "vue-js-client-crud",
   "version": "0.1.0",
-  "private": true,,
+  "private": true,
   "main": "server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
