@@ -40,10 +40,6 @@ export default {
                 {
                     key: 'notas',
                     label: 'Notas'
-                },
-                {
-                    key: 'createdAt',
-                    label: 'Fecha'
                 }
             ]
         }
