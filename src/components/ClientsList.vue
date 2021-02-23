@@ -1,90 +1,58 @@
 <template>
-  <div class="list row">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by nombre"
-          v-model="nombre"/>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
-            @click="searchTitle"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <h4>Lista de clientes</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(client, index) in clients"
-          :key="index"
-          @click="setActiveClient(client, index)"
-        >
-          {{ client.nombre }}
-        </li>
-      </ul>
-
-      <!-- <button class="m-3 btn btn-sm btn-danger" @click="removeAllClients">
-        Remove All
-      </button> -->
-    </div>
-    <div class="col-md-6">
-      <div v-if="currentClient">
-        <h4>Client</h4>
-        <div>
-          <label><strong>Nombre:</strong></label> {{ currentClient.nombre }}
-        </div>
-        <div>
-          <label><strong>CUIT:</strong></label> {{ currentClient.cuit }}
-        </div>
-        <div>
-          <label><strong>Sujeto Exento:</strong></label> {{ currentClient.sujetoExento ? "Si" : "No" }}
-        </div>
-        <div>
-          <label><strong>Direcci'on:</strong></label> {{ currentClient.dir }}
-        </div>
-        <div>
-          <label><strong>Tel'efono:</strong></label> {{ currentClient.tel }}
-        </div>
-        <div>
-          <label><strong>Mail:</strong></label> {{ currentClient.mail }}
-        </div>
-
-        <a class="badge badge-warning"
-          :href="'/clients/' + currentClient._id"
-        >
-          Edit
-        </a>
-      </div>
-      <div v-else>
-        <br />
-        <p>Please click on a Client...</p>
-      </div>
-    </div>
-  </div>
+    <b-container>
+        <b-row>
+            <b-col>
+                <b-input-group prepend="Cliente" class="mt-3">
+                    <b-form-input placeholder="Buscar por nombre" trim v-model="nombre"></b-form-input>
+                    <b-input-group-append>
+                    <b-button variant="info" @click="searchClient">Buscar</b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
+        </b-row>
+        <b-row>
+            <hr/>
+        </b-row>
+        <b-row>
+            <b-col>
+                <b-table 
+                    hover 
+                    :items="clients" 
+                    :fields="fields" 
+                    head-variant="light" 
+                    responsive="sm"
+                    selectable
+                    :select-mode="selectMode"
+                    @row-selected="onRowSelected"
+                    ></b-table>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
 import ClientDataService from "../services/ClientDataService";
-
 export default {
   name: "clients-list",
   data() {
     return {
-      clients: [],
-      currentClient: null,
-      currentIndex: -1,
-      nombre: ""
+        fields: ['nombre', 'cuit', 'tel', 'mail'],
+        clients: [],
+        currentClient: null,
+        currentIndex: -1,
+        selectMode: 'single',
+        nombre: ""
     };
   },
   methods: {
+    onRowSelected(items) {
+        var id_client = items[0]._id;
+        this.$router.push({ path: `/clients/${id_client}` })
+    },
     retrieveClients() {
       ClientDataService.getAll()
         .then(response => {
           this.clients = response.data;
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -113,7 +81,7 @@ export default {
         });
     },
     
-    searchTitle() {
+    searchClient() {
       ClientDataService.findByNombre(this.nombre)
         .then(response => {
           this.clients = response.data;
@@ -129,11 +97,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.list {
-  text-align: left;
-  /* max-width: 750px; */
-  margin: auto;
-}
-</style>
