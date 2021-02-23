@@ -98,7 +98,7 @@
       <sui-form-field>
         <b-table :items='order.avisos' :fields="this.fields" class='table-sm table-hover' @row-clicked="myRowClickHandler"></b-table>
       </sui-form-field>
-      <sui-button @click="saveOrder" type="submit">Submit</sui-button>
+      <sui-button @click="saveOrder" >Guardar</sui-button>
     </sui-form>
 
     <div v-else>
