@@ -1,122 +1,85 @@
 <template>
-  <div class="submit-form">
-    <sui-form v-if="!submitted">
-      <sui-header dividing>Nuevo Cliente</sui-header>
-      <sui-form-field>
-        <label>Nombre</label>
-        <input placeholder="Nombre" type="text" 
-          required
-          v-model="client.nombre" />
-      </sui-form-field>
-
-      <sui-form-field>
-        <label>CUIT</label>
-        <input placeholder="CUIT" type="text" 
-          required
-          v-model="client.cuit" />
-      </sui-form-field>
-
-      <sui-form-field>
-        <sui-checkbox label="Sujeto exento" required toggle v-model="client.sujetoExento" />
-      </sui-form-field>
-
-      <sui-form-field>
-        <label>Direccion</label>
-        <input placeholder="Direccion" type="text" 
-          required
-          v-model="client.dir" />
-      </sui-form-field>
-
-      <sui-form-field>
-        <label>Telefono</label>
-        <input placeholder="Telefono" type="text" 
-          required
-          v-model="client.tel" />
-      </sui-form-field>
-
-      <sui-form-field>
-        <label>Mail</label>
-        <input placeholder="Mail" type="text" 
-          required
-          v-model="client.mail" />
-      </sui-form-field>
-<!-- 
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input
-          type="text"
-          class="form-control"
-          id="nombre"
-          required
-          v-model="client.nombre"
-          name="nombre"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="cuit">CUIT</label>
-        <input
-          class="form-control"
-          id="cuit"
-          required
-          v-model="client.cuit"
-          name="cuit"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="sujetoExento">Sujeto Exento</label>
-        <input
-          class="form-control"
-          id="sujetoExento"
-          required
-          v-model="client.sujetoExento"
-          name="sujetoExento"
-          type="checkbox"
-        />
-        <sui-checkbox label="Sujeto exento" required toggle v-model="this.order.cliente.sujetoExento" /> 
-      </div>
-
-      <div class="form-group">
-        <label for="dir">Direcci'on</label>
-        <input
-          class="form-control"
-          id="dir"
-          required
-          v-model="client.dir"
-          name="dir"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="tel">Tel'efono</label>
-        <input
-          class="form-control"
-          id="tel"
-          required
-          v-model="client.tel"
-          name="tel"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="mail">Mail</label>
-        <input
-          class="form-control"
-          id="mail"
-          required
-          v-model="client.mail"
-          name="mail"
-        />
-      </div> -->
-      <sui-button  content="Guardar"  @click.prevent="saveClient" />
-    </sui-form>
-
-    <div v-else>
-      <h4>You submitted successfully!</h4>
-      <sui-button  content="Crear otro"  @click="newClient" />
+    <div>
+        <b-form @submit.prevent="saveClient" v-if="!submitted">
+            <b-form-group>
+                <h4>Nuevo Cliente</h4>
+            </b-form-group>
+            <b-form-group
+                id="input-group-1"
+                label-for="input-1"
+                label="Nombre" 
+            >
+                <b-form-input
+                    id="input-1"
+                    v-model="client.nombre"
+                    placeholder="Nombre"
+                    required
+                    ></b-form-input>
+            </b-form-group>
+            <b-form-group
+                id="input-group-2"
+                label-for="input-2"
+                label="CUIT"
+            >
+                <b-form-input
+                    id="input-2"
+                    v-model="client.cuit"
+                    placeholder="CUIT"
+                    required
+                    ></b-form-input>
+            </b-form-group>
+            <b-form-group
+                id="input-group-3"
+                label-for="input-3"
+                label="Sujeto Exento"
+                content-cols-sm
+            >
+                <b-form-checkbox id="input-3" v-model="client.sujetoExento" 
+                    value="true"
+                    unchecked-value="false"
+                ></b-form-checkbox>
+            </b-form-group>
+            <b-form-group
+                id="input-group-4"
+                label-for="input-4"
+                label="Direccion"
+            >
+                <b-form-input
+                    id="input-4"
+                    v-model="client.dir"
+                    required
+                    ></b-form-input>
+            </b-form-group>
+            <b-form-group
+                id="input-group-5"
+                label-for="input-5"
+                label="Telefono"
+            >
+                <b-form-input 
+                    id="input-5"
+                    v-model="client.tel"
+                    required
+                    ></b-form-input>
+            </b-form-group>
+            <b-form-group
+                id="input-group-6"
+                label-for="input-6"
+                label="Mail"
+            >
+                <b-form-input
+                    type="email"
+                    id="input-6"
+                    v-model="client.mail"
+                    required
+                    ></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Guardar</b-button>
+        </b-form>
+        <div v-else>
+            <h4>Cliente guardado correctamente!</h4>
+            <b-button type="submit" @click="newClient" variant="primary">Crear otro</b-button>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -167,9 +130,3 @@ export default {
 };
 </script>
 
-<style>
-.submit-form {
-  /* max-width: 300px; */
-  margin: auto;
-}
-</style>
