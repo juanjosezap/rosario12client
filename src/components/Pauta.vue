@@ -1,9 +1,13 @@
 <template>
   <div>
-      <sui-input placeholder="" icon="search" v-model="date" type="date" /> 
-      <sui-button @click="getPauta">Buscar</sui-button>
-      <sui-divider />
-      <b-table :items='items' :fields="fields" ></b-table>
+    <b-form-group>
+        <b-input-group prepend="Fecha" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-form-input id="inline-form-input-fecha-pauta" type="date" v-model="date"></b-form-input>
+            <b-button @click="getPauta">Buscar</b-button>
+        </b-input-group>
+    </b-form-group>
+    <hr/>
+    <b-table :items='items' :fields="fields" ></b-table>
   </div>
 </template>
 
@@ -24,6 +28,10 @@ export default {
                 {
                     key: 'nro',
                     label: 'Nro'
+                },
+                {
+                    key: 'client.nombre',
+                    label: 'Cliente'
                 },
                 {
                     key: 'col',
