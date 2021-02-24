@@ -1,236 +1,288 @@
 <template>
-  <div class="submit-form">
-    <sui-form  v-if="!submitted">
-      <sui-header dividing>Nueva Orden</sui-header>
-      <sui-form-fields>
-        <sui-form-field width="twelve">
-          <label>Nombre</label>
-          <input placeholder="Nombre" type="text" 
-            required
-            v-model="order.nombre" />
-        </sui-form-field>
-        <sui-form-field  width="four">
-          <label>Tarifa</label>
-          <input placeholder="Tarifa"
-            required
-            v-model="order.tarifa" />
-        </sui-form-field>        
-      </sui-form-fields>
-      <sui-form-fields inline>
-        <sui-form-field width="four">
-            <label>Columnas</label>
-            <input placeholder="Columnas"
-              required
-              v-model="order.col" />
-        </sui-form-field>
+    <div>
+        <b-form @submit.prevent="saveOrder" v-if="!submitted">
+            <b-form-group>
+                <h4>Nueva Orden</h4>
+            </b-form-group>
+            <b-form-group
+                id="input-group-1"
+                label-for="input-1"
+                label="Nombre">
+                <b-form-input
+                    id="input-1"
+                    required
+                    v-model="order.nombre" />
+            </b-form-group>
+            <b-form-group 
+                id="input-group-2"
+                label-for="input-2"
+                label="Tarifa">
+                <b-form-input
+                    id="input-2"
+                    required
+                    v-model="order.tarifa" />
+            </b-form-group>
+            <b-form-group
+                id="input-group-3"
+                label-for="input-3"
+                label="Columnas">
+                <b-form-input   
+                    id="input-3"
+                    required
+                    v-model="order.col" />
+            </b-form-group>
+            <b-form-group
+                id="input-group-4"
+                label-for="input-4"
+                label="Alto">
+                <b-form-input
+                    id="input-4"
+                    required
+                    v-model="order.alto" />
+            </b-form-group>
+            <b-form-group
+                id="input-group-5"
+                label-for="input-5"
+                label="Color">
+                <b-form-checkbox 
+                    id="input-5"
+                    v-model="order.color"
+                    value="true"
+                    unchecked-value="false" />
+            </b-form-group>
+            <b-form-group
+                id="input-group-6"
+                label-for="input-6"
+                label="Nota">
+                <b-form-textarea 
+                    rows="3"
+                    id="input-6"
+                    v-model="order.nota" />
+            </b-form-group>
+            <hr/>
+            <b-card bg-variant="light" title="Cliente">
+                
+                    <b-form-group
+                        label="Nombre:"
+                        label-for="nested-client"
+                        label-cols-sm="3"
+                        label-align-sm="right"
+                    >
+                        <b-form-input 
+                            id="nested-client" 
+                            disabled
+                            required
+                            v-model="this.order.cliente.nombre"></b-form-input>
+                    </b-form-group>      
+                    <b-form-group
+                        label="CUIT:"
+                        label-for="nested-client-cuit"
+                        label-cols-sm="3"
+                        label-align-sm="right"
+                    >
+                        <b-form-input 
+                            id="nested-client-cuit" 
+                            disabled
+                            v-model="this.order.cliente.cuit"></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                        label="Telefono:"
+                        label-for="nested-client-tel"
+                        label-cols-sm="3"
+                        label-align-sm="right"
+                    >
+                        <b-form-input 
+                            id="nested-client-tel" 
+                            disabled
+                            v-model="this.order.cliente.tel"></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                        label="Mail:"
+                        label-for="nested-client-mail"
+                        label-cols-sm="3"
+                        label-align-sm="right"
+                    >
+                        <b-form-input 
+                            id="nested-client-mail" 
+                            disabled
+                            v-model="this.order.cliente.mail"></b-form-input>
+                    </b-form-group>
+                
+                <b-form-group
+                    label-cols-sm="3"
+                    label-align-sm="right"
+                >
+                    <b-button @click="openModal">Seleccionar</b-button>  
+                </b-form-group>          
+            </b-card>
+            <hr/>
+            <b-card title="Avisos" bg-variant="light">
+                <b-form-group
+                    label-for="aviso-fecha"
+                    label="Fecha"
+                >
+                    <b-form-input
+                        id="aviso-fecha" 
+                        type="date"
+                        v-model="currentAviso.fecha" />
+                </b-form-group>
+                <b-form-group
+                    label-for="aviso-pagina"
+                    label="Pagina"
+                >
+                    <b-form-input
+                        id=aviso-pagina
+                        type="number"
+                        v-model="currentAviso.pagina"  />
+                </b-form-group>
+                <b-form-group v-if="currentAviso.index === -1">
+                    <b-button @click="addAviso" >Agregar</b-button>  
+                </b-form-group>
+                <b-form-group v-else>
+                    <b-button-group>
+                        <b-button @click="editAviso" >Editar</b-button> 
+                        <b-button @click="deleteAviso" >Eliminar</b-button> 
+                        <b-button @click="cancelAviso" >Cancelar</b-button> 
+                    </b-button-group>
+                </b-form-group>
+                <b-table :items='order.avisos' :fields="this.fields" class='table-sm table-hover' @row-clicked="myRowClickHandler"></b-table>
+            </b-card>
+            <hr/>
+            <b-button type="submit">Guardar</b-button>
+        </b-form>
         
-        <sui-form-field width="four">
-          <label>Alto</label>
-          <input placeholder="Alto"
-            required
-            v-model="order.alto" />
-        </sui-form-field>
-        <sui-form-field>
-          <sui-checkbox label="Color" toggle v-model="order.color" />
-        </sui-form-field> 
-      </sui-form-fields>
-      <sui-form-field>
-        <label>Nota</label>
-        <textarea placeholder="Nota"
-          required rows="3"
-          v-model="order.nota" />
-      </sui-form-field>
-        
+        <div v-else>
+            <h4>Orden creada correctamente!</h4>
+            <b-button  @click="newOrder">Crear otra</b-button >
+        </div>
+        <ModalSearchClient v-model="modalOpen" v-on:select-client='selectClient'></ModalSearchClient>
 
-      <sui-header dividing>Cliente</sui-header>
-       <sui-form-fields inline fields="three">
-        <sui-form-field width="twelve">
-          <sui-button attached="left" content="Seleccionar"  @click="openModal" />
-          <input type="text" placeholder="" disabled v-model="this.order.cliente.nombre" />
-        </sui-form-field>
-        <sui-form-field >
-          <label>CUIT</label>
-          <input type="text" placeholder="" disabled v-model="this.order.cliente.cuit"/>
-        </sui-form-field>
-        <sui-form-field >
-          <sui-checkbox label="Sujeto exento" toggle disabled  v-model="this.order.cliente.sujetoExento" />
-        </sui-form-field>
-      </sui-form-fields>
-
-      <sui-form-fields inline fields="three">
-        <sui-form-field width="eleven">
-          <label>Direccion</label>
-          <input type="text" placeholder="" disabled v-model="this.order.cliente.dir" />
-        </sui-form-field>
-        <sui-form-field >
-          <label>Telefono</label>
-          <input type="text" placeholder="" disabled v-model="this.order.cliente.tel" />
-        </sui-form-field>
-        <sui-form-field >
-          <label>Mail</label>
-          <input type="text" placeholder="" disabled v-model="this.order.cliente.mail"/>
-        </sui-form-field>
-      </sui-form-fields>
-
-      <sui-header dividing>Avisos</sui-header>      
-      <sui-form-fields fields="three">
-        <sui-form-field inline>
-          <label>Fecha</label>
-          <input placeholder="Fecha" type='date' 
-            required
-            v-model="currentAviso.fecha" />
-        </sui-form-field>
-        <sui-form-field inline>
-          <label>Pagina</label>
-          <input placeholder="Pagina"
-            required
-            v-model="currentAviso.pagina" />
-        </sui-form-field>
-        <sui-form-field v-if="currentAviso.index === -1">
-          <sui-button @click="addAviso" >Agregar</sui-button>
-        </sui-form-field>
-        <sui-form-field v-else>
-          <sui-button @click="editAviso" >Editar</sui-button>
-          <sui-button @click="deleteAviso" >Eliminar</sui-button>
-          <sui-button @click="cancelAviso" >Cancelar</sui-button>
-        </sui-form-field>
-      </sui-form-fields>
-      <sui-form-field>
-        <b-table :items='order.avisos' :fields="this.fields" class='table-sm table-hover' @row-clicked="myRowClickHandler"></b-table>
-      </sui-form-field>
-      <sui-button @click="saveOrder" >Guardar</sui-button>
-    </sui-form>
-
-    <div v-else>
-      <h4>You submitted successfully!</h4>
-      <button class="btn btn-success" @click="newOrder">Add</button>
     </div>
-
-    <ModalSearchClient v-model="modalOpen" v-on:select-client='selectClient'></ModalSearchClient>
-
-  </div>
 </template>
 
 <script>
 import OrderDataService from "../services/OrderDataService";
 import ModalSearchClient from './ModalSearchClient';
-
 export default {
-  components: {
-    ModalSearchClient
-  },
-  name: "add-order",
-  data() {
-    return {
-      order: {
-        id: null,
-        nombre: '',
-        nro: '',
-        col: '',
-        alto: '',
-        tarifa: '',
-        notas: '',
-        color: false,
-        avisos: [],
-        cliente: {}
-      },
-      currentAviso: {
-        fecha: '',
-        pagina: null,
-        index: -1
-      },
-      fields: ['fecha', 'pagina'],
-      submitted: false,
-      modalOpen: false
-    };
-  },
-  methods: {
-    saveOrder() {
-      var data = {
-        nombre: this.order.nombre,
-        nro: this.order.nro,
-        col: this.order.col,
-        alto: this.order.alto,
-        tarifa: this.order.tarifa,
-        notas: this.order.notas,
-        color: this.order.color,
-        avisos: this.order.avisos,
-        client: this.order.cliente._id
-      };
-
-      OrderDataService.create(data)
-        .then(response => {
-          //this.order.id = response.data.id;
-          console.log(response.data);
-          this.submitted = true;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+    components: {
+        ModalSearchClient
     },
+    name: "add-order",
+    data() {
+        return {
+            order: {
+                id: null,
+                nombre: '',
+                nro: '',
+                col: '',
+                alto: '',
+                tarifa: '',
+                notas: '',
+                color: false,
+                avisos: [],
+                cliente: {}
+            },
+            currentAviso: {
+                fecha: '',
+                pagina: null,
+                index: -1
+            },
+            fields: ['fecha', 'pagina'],
+            submitted: false,
+            modalOpen: false
+        };
+    },
+    methods: {
+        saveOrder() {
+            var data = {
+                nombre: this.order.nombre,
+                nro: this.order.nro,
+                col: this.order.col,
+                alto: this.order.alto,
+                tarifa: this.order.tarifa,
+                notas: this.order.notas,
+                color: this.order.color,
+                avisos: this.order.avisos,
+                client: this.order.cliente._id
+            };
+
+            OrderDataService.create(data)
+                .then(response => {
+                //this.order.id = response.data.id;
+                console.log(response.data);
+                this.submitted = true;
+                })
+                .catch(e => {
+                console.log(e);
+                });
+        },
+        newOrder() {
+            this.submitted = false;
+            this.currentAviso = {
+                fecha: '',
+                pagina: null,
+                index: -1
+            };
+            this.order = {
+                id: null,
+                nombre: '',
+                nro: '',
+                col: '',
+                alto: '',
+                tarifa: '',
+                notas: '',
+                color: false,
+                avisos: [],
+                cliente: {}
+            };
+        },
+
+        openModal(e) {
+            e.preventDefault();
+            this.modalOpen = !this.modalOpen;
+        },
+
+        selectClient(client) {
+            this.order.cliente = client;
+        },
+        addAviso(e) {
+            e.preventDefault();
+            this.order.avisos.push({
+                fecha: this.currentAviso.fecha,
+                pagina: this.currentAviso.pagina
+            });
+        },
     
-    newOrder() {
-      this.submitted = false;
-      this.currentAviso = {};
-      this.order = {};
-    },
+        myRowClickHandler(record, index) {
+            console.log(index)
+            this.currentAviso.fecha = record.fecha;
+            this.currentAviso.pagina = record.pagina;
+            this.currentAviso.index = index;
+        },
 
-    addAviso(e) {
-      e.preventDefault();
-      this.order.avisos.push({
-        fecha: this.currentAviso.fecha,
-        pagina: this.currentAviso.pagina
-      });
-    },
+        cancelAviso(e) {
+            e.preventDefault();
+            this.currentAviso.fecha = ""
+            this.currentAviso.pagina = ""
+            this.currentAviso.index = -1;
+        },
 
-    openModal(e) {
-      e.preventDefault();
-      this.modalOpen = !this.modalOpen;
-    },
+        editAviso(e) {
+            e.preventDefault();
+            this.order.avisos[this.currentAviso.index].fecha = this.currentAviso.fecha;
+            this.order.avisos[this.currentAviso.index].pagina = this.currentAviso.pagina;
+            this.currentAviso.fecha = ""
+            this.currentAviso.pagina = ""
+            this.currentAviso.index = -1;
+        },
 
-    selectClient(client) {
-      console.log('cliente seleccionado ' + client);
-      this.order.cliente = client;
-    },
-    
-    myRowClickHandler(record, index) {
-      console.log(index)
-      this.currentAviso.fecha = record.fecha;
-      this.currentAviso.pagina = record.pagina;
-      this.currentAviso.index = index;
-    },
-
-    cancelAviso(e) {
-      e.preventDefault();
-      this.currentAviso.fecha = ""
-      this.currentAviso.pagina = ""
-      this.currentAviso.index = -1;
-    },
-
-    editAviso(e) {
-      e.preventDefault();
-      this.order.avisos[this.currentAviso.index].fecha = this.currentAviso.fecha;
-      this.order.avisos[this.currentAviso.index].pagina = this.currentAviso.pagina;
-      this.currentAviso.fecha = ""
-      this.currentAviso.pagina = ""
-      this.currentAviso.index = -1;
-    },
-
-    deleteAviso(e) {
-      e.preventDefault();
-      this.order.avisos.splice(this.currentAviso.index, 1);
-      this.currentAviso.fecha = ""
-      this.currentAviso.pagina = ""
-      this.currentAviso.index = -1;
+        deleteAviso(e) {
+            e.preventDefault();
+            this.order.avisos.splice(this.currentAviso.index, 1);
+            this.currentAviso.fecha = ""
+            this.currentAviso.pagina = ""
+            this.currentAviso.index = -1;
+        }
     }
-
-  }
-};
-</script>
-
-<style>
-.submit-form {
-  /* max-width: 300px; */
-  margin: auto;
 }
-</style>
+</script>
