@@ -1,23 +1,21 @@
 <template>
-    <b-modal v-model="value">
-        <h4>Select a Client</h4>
-            <sui-modal-description>
-                <sui-input placeholder="Search..." icon="search" v-model="nombre" /> 
-                <sui-button @click="searchClient">Buscar</sui-button>
-                <sui-divider />
-                <ul class="list-group">
-                    <li class="list-group-item"
-                    v-for="(client, index) in clients"
+    <b-modal v-model="value" title="Seleccione un cliente" hide-footer>
+        <b-form-group>
+            <b-input-group prepend="Nombre" class="mb-2 mr-sm-2 mb-sm-0">
+              <b-form-input id="inline-form-input-client" placeholder="Cliente" v-model="nombre"></b-form-input>
+              <b-button @click="searchClient">Buscar</b-button>
+            </b-input-group>
+        </b-form-group>
+        <b-form-group>
+            <b-list-group>
+                <b-list-group-item  v-for="(client, index) in clients"
                     :key="index"
                     @click="selectClient(client)"
                     >
                     {{ client.nombre }}
-                    </li>
-                </ul>
-            </sui-modal-description>
-        <sui-modal-actions>
-            <sui-button @click.native="close">Cancelar</sui-button>
-        </sui-modal-actions>
+                </b-list-group-item>
+            </b-list-group>
+        </b-form-group>
     </b-modal>
 </template>
 
