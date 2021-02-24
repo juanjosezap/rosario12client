@@ -39,6 +39,10 @@ export default {
                     label: 'Cliente'
                 },
                 {
+                    key: 'medio',
+                    label: 'Medio'
+                },
+                {
                     key: 'col',
                     label: 'Columnas'
                 },

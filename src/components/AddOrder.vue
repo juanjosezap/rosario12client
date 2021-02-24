@@ -42,13 +42,26 @@
             </b-form-group>
             <b-form-group
                 id="input-group-5"
-                label-for="input-5"
-                label="Color">
+                label-for="input-5"                
+                >
                 <b-form-checkbox 
                     id="input-5"
                     v-model="order.color"
                     value="true"
-                    unchecked-value="false" />
+                    unchecked-value="false" >Color</b-form-checkbox>                
+            </b-form-group>
+            <b-form-group
+                id="input-group-medio"
+                label-for="input-medio"
+                label="Medio"
+                >
+                <b-form-select
+                    id="input-medio"
+                    class="mb-2 mr-sm-2 mb-sm-0"
+                    v-model="order.medio"
+                    :options="[{ text: 'Rosario 12', value: 'Rosario 12' }, { text: 'Pagina 12', value: 'Pagina 12' }]"
+                    :value="'Rosario 12'"
+                    ></b-form-select>
             </b-form-group>
             <b-form-group
                 id="input-group-6"
@@ -179,6 +192,7 @@ export default {
                 tarifa: '',
                 notas: '',
                 color: false,
+                medio: '',
                 avisos: [],
                 cliente: {}
             },
@@ -202,6 +216,7 @@ export default {
                 tarifa: this.order.tarifa,
                 notas: this.order.notas,
                 color: this.order.color,
+                medio: this.order.medio,
                 avisos: this.order.avisos,
                 client: this.order.cliente._id
             };

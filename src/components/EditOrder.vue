@@ -51,6 +51,18 @@
                     unchecked-value="false" />
             </b-form-group>
             <b-form-group
+                id="input-group-medio"
+                label-for="input-medio"
+                label="Medio"
+                >
+                <b-form-select
+                    id="input-medio"
+                    class="mb-2 mr-sm-2 mb-sm-0"
+                    v-model="order.medio"
+                    :options="[{ text: 'Rosario 12', value: 'Rosario 12' }, { text: 'Pagina 12', value: 'Pagina 12' }]"
+                    ></b-form-select>
+            </b-form-group>
+            <b-form-group
                 id="input-group-6"
                 label-for="input-6"
                 label="Nota">
