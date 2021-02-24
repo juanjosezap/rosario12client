@@ -20,7 +20,7 @@
                 <b-form-input
                     id="input-2"
                     required
-                    v-model="order.tarifa" />
+                    v-model="order.tarifa" type="number"/>
             </b-form-group>
             <b-form-group
                 id="input-group-3"
@@ -29,7 +29,7 @@
                 <b-form-input   
                     id="input-3"
                     required
-                    v-model="order.col" />
+                    v-model="order.col" type="number" />
             </b-form-group>
             <b-form-group
                 id="input-group-4"
@@ -38,8 +38,9 @@
                 <b-form-input
                     id="input-4"
                     required
-                    v-model="order.alto" />
+                    v-model="order.alto" type="number" />
             </b-form-group>
+            <b-form-group>Total: <strong>$ {{ total }}</strong></b-form-group>
             <b-form-group
                 id="input-group-5"
                 label-for="input-5"                
@@ -205,6 +206,11 @@ export default {
             submitted: false,
             modalOpen: false
         };
+    },
+    computed: {
+        total: function () {
+            return this.order.col * this.order.alto * this.order.tarifa
+        }
     },
     methods: {
         saveOrder() {

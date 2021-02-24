@@ -40,6 +40,7 @@
                     required
                     v-model="order.alto" />
             </b-form-group>
+            <b-form-group>Total: <strong>$ {{ total }}</strong></b-form-group>
             <b-form-group
                 id="input-group-5"
                 label-for="input-5"
@@ -195,6 +196,11 @@ export default {
             fields: ['fecha', 'pagina'],
             submitted: false,
             modalOpen: false
+        }
+    },
+    computed: {
+        total: function () {
+            return this.order.col * this.order.alto * this.order.tarifa
         }
     },
     methods: {
