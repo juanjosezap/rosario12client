@@ -86,6 +86,11 @@ export const router = new Router({
       path: "/addOrder",
       name: "add Order",
       component: () => import("./components/AddOrder")
+    },
+    {
+      path: "/editOrder/:id",
+      name: "add Order",
+      component: () => import("./components/EditOrder")
     }
   ]
 });

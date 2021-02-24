@@ -7,7 +7,12 @@
         </b-input-group>
     </b-form-group>
     <hr/>
-    <b-table :items='items' :fields="fields" ></b-table>
+    <b-table 
+        :items='items' 
+        :fields="fields" 
+        selectable
+        :select-mode="selectMode"
+        @row-selected="onRowSelected"></b-table>
   </div>
 </template>
 
@@ -49,7 +54,8 @@ export default {
                     key: 'notas',
                     label: 'Notas'
                 }
-            ]
+            ],
+            selectMode: 'single'
         }
     },
     mounted() {
@@ -57,6 +63,10 @@ export default {
 
     },
     methods: {
+        onRowSelected(items) {
+            var id_order = items[0]._id;
+            this.$router.push({ path: `/EditOrder/${id_order}` })
+        },
         getPauta() {
             OrderDataService.getPauta(this.date)
                 .then(response => {
