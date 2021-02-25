@@ -4,7 +4,9 @@
         <b-input-group prepend="Fecha" class="mb-2 mr-sm-2 mb-sm-0">
             <b-form-input id="inline-form-input-fecha-pauta" type="date" v-model="date"></b-form-input>
             <b-button @click="getPauta">Buscar</b-button>
+            <b-button @click="downloadPauta">Descargar</b-button>
         </b-input-group>
+        
     </b-form-group>
     <hr/>
     <b-table 
@@ -76,6 +78,22 @@ export default {
                 .then(response => {
                 this.items = response.data;
                 console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+        },
+        downloadPauta () {
+            OrderDataService
+            .downloadPauta(this.date)
+            .then(response => {
+                const datePauta = new Date(this.date);
+                const fecha = (datePauta.getDate() + 1)  + '-' + (datePauta.getMonth() + 1).toString().padStart(2, '0') + '-' +  datePauta.getFullYear();
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = `PAUTA${fecha}.pdf`
+                link.click()
             })
             .catch(e => {
                 console.log(e);

@@ -36,7 +36,7 @@ export default {
   name: "clients-list",
   data() {
     return {
-        fields: ['nombre', 'cuit', 'tel', 'mail'],
+        fields: ['nombre', 'cuit', 'tel', 'mail', 'iva'],
         clients: [],
         currentClient: null,
         currentIndex: -1,

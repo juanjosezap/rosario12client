@@ -32,6 +32,20 @@ class OrderDataService {
   getPauta(date) {
     return http.get(`/pauta?date=${date}`);
   }
+
+  downloadOrder(id) {
+    return http.get(`/pdf/getOrder/${id}`, {
+      responseType: 'blob',
+      timeout: 30000
+    })
+  }
+
+  downloadPauta(date) {
+    return http.get(`/pdf/getPauta?date=${date}`, {
+      responseType: 'blob',
+      timeout: 30000
+    })
+  }
 }
 
 export default new OrderDataService();

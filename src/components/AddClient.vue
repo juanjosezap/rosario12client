@@ -29,22 +29,17 @@
                     ></b-form-input>
             </b-form-group>
             <b-form-group
-                id="input-group-3"
-                label-for="input-3"
-                content-cols-sm
-            >
-                <b-form-checkbox id="input-3" v-model="client.sujetoExento" 
-                    value="true"
-                    unchecked-value="false"
-                    inline
-                >Sujeto Exento</b-form-checkbox>
-                <b-form-checkbox 
-                    id="input-ri" 
-                    v-model="client.responsableInscripto"
-                    value="true"
-                    unchecked-value="false"
-                    inline
-                    >IVA Responsable Inscripto</b-form-checkbox>
+                id="input-group-iva"
+                label-for="input-iva"
+                v-slot="{ ariaDescribedby }"
+                label="Condicion IVA" 
+                >
+                 <b-form-radio-group 
+                  v-model="client.iva" 
+                  :aria-describedby="ariaDescribedby" required>
+                  <b-form-radio value="Responsable Inscripto">Responsable Inscripto</b-form-radio>
+                  <b-form-radio value="Sujeto Exento">Sujeto Exento</b-form-radio>
+                </b-form-radio-group>
             </b-form-group>
             <b-form-group
                 id="input-group-4"
@@ -100,11 +95,10 @@ export default {
         id: null,
         nombre: "",
         cuit: "",
-        sujetoExento: false,
         dir: "",
         tel: "",
         mail: "",
-        responsableInscripto: false
+        iva: ""
       },
       submitted: false
     };
@@ -114,11 +108,10 @@ export default {
       var data = {
         nombre: this.client.nombre,
         cuit: this.client.cuit,
-        sujetoExento: this.client.sujetoExento,
         dir: this.client.dir,
         tel: this.client.tel,
         mail: this.client.mail,
-        responsableInscripto: this.client.responsableInscripto
+        iva: this.client.iva
       };
       ClientDataService.create(data)
         .then(response => {

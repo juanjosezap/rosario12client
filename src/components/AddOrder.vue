@@ -62,6 +62,7 @@
                     v-model="order.medio"
                     :options="[{ text: 'Rosario 12', value: 'Rosario 12' }, { text: 'Pagina 12', value: 'Pagina 12' }]"
                     :value="'Rosario 12'"
+                    
                     ></b-form-select>
             </b-form-group>
             <b-form-group
@@ -71,7 +72,7 @@
                 <b-form-textarea 
                     rows="3"
                     id="input-6"
-                    v-model="order.nota" />
+                    v-model="order.notas" />
             </b-form-group>
             <hr/>
             <b-card bg-variant="light" title="Cliente">
@@ -121,6 +122,18 @@
                             disabled
                             v-model="this.order.cliente.mail"></b-form-input>
                     </b-form-group>
+                    
+                    <b-form-group
+                        label="IVA:"
+                        label-for="nested-client-iva"
+                        label-cols-sm="3"
+                        label-align-sm="right"
+                    >
+                        <b-form-input 
+                            id="nested-client-iva" 
+                            disabled
+                            v-model="this.order.cliente.iva"></b-form-input>
+                    </b-form-group>
                 
                 <b-form-group
                     label-cols-sm="3"
@@ -130,36 +143,45 @@
                 </b-form-group>          
             </b-card>
             <hr/>
-            <b-card title="Avisos" bg-variant="light">
-                <b-form-group
-                    label-for="aviso-fecha"
-                    label="Fecha"
-                >
-                    <b-form-input
-                        id="aviso-fecha" 
-                        type="date"
-                        v-model="currentAviso.fecha" />
-                </b-form-group>
-                <b-form-group
-                    label-for="aviso-pagina"
-                    label="Pagina"
-                >
-                    <b-form-input
-                        id=aviso-pagina
-                        type="number"
-                        v-model="currentAviso.pagina"  />
-                </b-form-group>
-                <b-form-group v-if="currentAviso.index === -1">
-                    <b-button @click="addAviso" >Agregar</b-button>  
-                </b-form-group>
-                <b-form-group v-else>
-                    <b-button-group>
-                        <b-button @click="editAviso" >Editar</b-button> 
-                        <b-button @click="deleteAviso" >Eliminar</b-button> 
-                        <b-button @click="cancelAviso" >Cancelar</b-button> 
-                    </b-button-group>
-                </b-form-group>
-                <b-table :items='order.avisos' :fields="this.fields" class='table-sm table-hover' @row-clicked="myRowClickHandler"></b-table>
+            <b-card  :title="avisosTitle" bg-variant="light">
+                <b-container>
+                    <b-row>
+                        <b-col>
+                            <b-form-group
+                                label-for="aviso-fecha"
+                                label="Fecha"
+                            >
+                                <b-form-input
+                                    id="aviso-fecha" 
+                                    type="date"
+                                    v-model="currentAviso.fecha" />
+                            </b-form-group>
+                            <b-form-group
+                                label-for="aviso-pagina"
+                                label="Pagina"
+                                v-if="!edicionNacional"
+                            >
+                                <b-form-input
+                                    id=aviso-pagina
+                                    type="number"
+                                    v-model="currentAviso.pagina"  />
+                            </b-form-group>
+                            <b-form-group v-if="currentAviso.index === -1">
+                                <b-button @click="addAviso" >Agregar</b-button>  
+                            </b-form-group>
+                            <b-form-group v-else>
+                                <b-button-group>
+                                    <b-button @click="editAviso" >Editar</b-button> 
+                                    <b-button @click="deleteAviso" >Eliminar</b-button> 
+                                    <b-button @click="cancelAviso" >Cancelar</b-button> 
+                                </b-button-group>
+                            </b-form-group>
+                        </b-col>
+                        <b-col>
+                            <b-table :items='order.avisos' :fields="this.fields" class='table-sm table-hover' @row-clicked="myRowClickHandler"></b-table>
+                        </b-col>
+                    </b-row>
+                </b-container>
             </b-card>
             <hr/>
             <b-button type="submit">Guardar</b-button>
@@ -193,7 +215,7 @@ export default {
                 tarifa: '',
                 notas: '',
                 color: false,
-                medio: '',
+                medio: 'Rosario 12',
                 avisos: [],
                 cliente: {}
             },
@@ -202,14 +224,23 @@ export default {
                 pagina: null,
                 index: -1
             },
-            fields: ['fecha', 'pagina'],
+            // fields: ['fecha', 'pagina'],
             submitted: false,
             modalOpen: false
         };
     },
     computed: {
         total: function () {
-            return this.order.col * this.order.alto * this.order.tarifa
+            return this.order.col * this.order.alto * this.order.tarifa;
+        },
+        avisosTitle: function () {
+            return 'Avisos' + (this.edicionNacional ? " - Edicion Nacional" : "");
+        },
+        edicionNacional: function () {
+            return this.order.medio == 'Pagina 12';
+        },
+        fields: function() {
+            return this.edicionNacional ? ['fecha'] : ['fecha', 'pagina']
         }
     },
     methods: {
@@ -253,6 +284,7 @@ export default {
                 tarifa: '',
                 notas: '',
                 color: false,
+                medio: 'Rosario 12',
                 avisos: [],
                 cliente: {}
             };
@@ -268,6 +300,9 @@ export default {
         },
         addAviso(e) {
             e.preventDefault();
+            if (this.currentAviso.fecha == "") return;
+            if (!this.edicionNacional && this.currentAviso.pagina == null) return;
+
             this.order.avisos.push({
                 fecha: this.currentAviso.fecha,
                 pagina: this.currentAviso.pagina
