@@ -303,7 +303,9 @@ export default {
         },
 
         saveOrder() {
+            const user = JSON.parse(localStorage.getItem('user'));
             this.order.client = this.client
+            this.order.updatedBy = user.id;
             OrderDataService.update(this.order._id, this.order)
                 .then(response => {
                     console.log(response)

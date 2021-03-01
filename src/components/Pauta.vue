@@ -1,9 +1,8 @@
 <template>
   <div>
     <b-form-group>
-        <b-input-group prepend="Fecha" class="mb-2 mr-sm-2 mb-sm-0">
+        <b-input-group prepend="Fecha" class="mb-2 mr-sm-2 mb-sm-0" v-on:change="getPauta" >
             <b-form-input id="inline-form-input-fecha-pauta" type="date" v-model="date"></b-form-input>
-            <b-button @click="getPauta">Buscar</b-button>
             <b-button @click="downloadPauta">Descargar</b-button>
         </b-input-group>
         
@@ -14,7 +13,12 @@
         :fields="fields" 
         selectable
         :select-mode="selectMode"
-        @row-selected="onRowSelected"></b-table>
+        @row-selected="onRowSelected"
+        fixed
+        small
+        head-variant="light"
+        hover
+        outlined></b-table>
   </div>
 </template>
 
@@ -59,6 +63,22 @@ export default {
                 {
                     key: 'notas',
                     label: 'Notas'
+                },
+                {
+                    key: 'createdBy.username',
+                    label: 'Creado por'
+                },
+                {
+                    key: 'createdAt',
+                    label: 'Fecha'
+                },
+                {
+                    key: 'updatedBy.username',
+                    label: 'Actualizado'
+                },
+                {
+                    key: 'updatedAt',
+                    label: 'Fecha'
                 }
             ],
             selectMode: 'single'
@@ -76,8 +96,11 @@ export default {
         getPauta() {
             OrderDataService.getPauta(this.date)
                 .then(response => {
-                this.items = response.data;
-                console.log(response.data);
+                this.items = response.data.map(function(order) {
+                    order.createdAt = new Date(order.createdAt).toLocaleDateString();
+                    order.updatedAt = new Date(order.updatedAt).toLocaleDateString();
+                    return order;
+                });
             })
             .catch(e => {
                 console.log(e);
