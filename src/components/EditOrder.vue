@@ -20,7 +20,10 @@
                 <b-form-input
                     id="input-2"
                     required
-                    v-model="order.tarifa" />
+                    v-model="order.tarifa"
+                    type="number"
+                    step="0.01" 
+                    min="0" />
             </b-form-group>
             <b-form-group
                 id="input-group-3"
@@ -29,7 +32,8 @@
                 <b-form-input   
                     id="input-3"
                     required
-                    v-model="order.col" />
+                    v-model="order.col" 
+                    type="number" min="0" />
             </b-form-group>
             <b-form-group
                 id="input-group-4"
@@ -38,7 +42,8 @@
                 <b-form-input
                     id="input-4"
                     required
-                    v-model="order.alto" />
+                    v-model="order.alto"
+                    type="number" min="0" />
             </b-form-group>
             <b-form-group>Total: <strong>$ {{ total }}</strong></b-form-group>
             <b-form-group
@@ -201,7 +206,6 @@
 <script>
 import OrderDataService from "../services/OrderDataService";
 import ModalSearchClient from './ModalSearchClient';
-// import axios from 'axios';
 export default {
     components: {
         ModalSearchClient
