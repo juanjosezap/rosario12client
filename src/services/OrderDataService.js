@@ -46,6 +46,10 @@ class OrderDataService {
       timeout: 30000
     })
   }
+  getorders(data) {
+    console.log(` la data: ${data}`);
+    return http.get(`/orders/getorders?nro=${data.nro}&desde=${data.desde}&hasta=${data.hasta}&nombre=${data.nombre}&medio=${data.medio}&client=${data.client}`)
+  }
 }
 
 export default new OrderDataService();

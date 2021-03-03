@@ -10,6 +10,7 @@
             <b-nav-item to="/clients">Clientes</b-nav-item>
             <b-nav-item to="/addClient">Nuevo cliente</b-nav-item>
             <b-nav-item to="/addOrder">Nueva orden</b-nav-item>
+            <b-nav-item to="/OrdersList">Ordenes</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->

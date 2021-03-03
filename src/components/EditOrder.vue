@@ -196,7 +196,6 @@
         
         <div v-else>
             <h4>Orden editada correctamente!</h4>
-            <b-button  @click="goback">Volver</b-button >
         </div>
         <ModalSearchClient v-model="modalOpen" v-on:select-client='selectClient'></ModalSearchClient>
 
@@ -325,9 +324,6 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
-        },
-        goback() {
-            this.$router.push('/home');
         },
         downloadOrder() {
             OrderDataService

@@ -91,6 +91,11 @@ export const router = new Router({
       path: "/editOrder/:id",
       name: "add Order",
       component: () => import("./components/EditOrder")
+    },
+    {
+      path: "/OrdersList",
+      name: "Orders List",
+      component: () => import("./components/OrdersList")
     }
   ]
 });

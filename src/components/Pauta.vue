@@ -97,8 +97,11 @@ export default {
             OrderDataService.getPauta(this.date)
                 .then(response => {
                 this.items = response.data.map(function(order) {
+                    order.nombre = order.nombre.substring(0, 35);
+                    order.notas = order.notas.substring(0, 22);
                     order.createdAt = new Date(order.createdAt).toLocaleDateString();
                     order.updatedAt = new Date(order.updatedAt).toLocaleDateString();
+                    order.client.nombre = order.client.nombre.substring(0, 35);
                     return order;
                 });
             })
