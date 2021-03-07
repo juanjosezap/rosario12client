@@ -169,6 +169,14 @@
                                     type="number"
                                     v-model="currentAviso.pagina"  />
                             </b-form-group>
+                            <b-form-group
+                                label-for="aviso-nombre"
+                                label="Nombre"
+                            >
+                                <b-form-input
+                                    id="aviso-nombre"
+                                    v-model="currentAviso.nombre" />
+                            </b-form-group>
                             <b-form-group v-if="currentAviso.index === -1">
                                 <b-button @click="addAviso" >Agregar</b-button>  
                             </b-form-group>
@@ -225,6 +233,7 @@ export default {
             currentAviso: {
                 fecha: '',
                 pagina: null,
+                nombre: '',
                 index: -1
             },
             // fields: ['fecha', 'pagina'],
@@ -243,7 +252,7 @@ export default {
             return this.order.medio == 'Pagina 12';
         },
         fields: function() {
-            return this.edicionNacional ? ['fecha'] : ['fecha', 'pagina']
+            return this.edicionNacional ? ['fecha', 'nombre'] : ['fecha', 'pagina', 'nombre']
         }
     },
     methods: {
@@ -278,6 +287,7 @@ export default {
             this.currentAviso = {
                 fecha: '',
                 pagina: null,
+                nombre: '',
                 index: -1
             };
             this.order = {
@@ -310,7 +320,8 @@ export default {
 
             this.order.avisos.push({
                 fecha: this.currentAviso.fecha,
-                pagina: this.currentAviso.pagina
+                pagina: this.currentAviso.pagina,
+                nombre: this.currentAviso.nombre.trim()
             });
         },
     
@@ -318,13 +329,15 @@ export default {
             console.log(index)
             this.currentAviso.fecha = record.fecha;
             this.currentAviso.pagina = record.pagina;
+            this.currentAviso.nombre = record.nombre;
             this.currentAviso.index = index;
         },
 
         cancelAviso(e) {
             e.preventDefault();
-            this.currentAviso.fecha = ""
-            this.currentAviso.pagina = ""
+            this.currentAviso.fecha = "";
+            this.currentAviso.pagina = "";
+            this.currentAviso.nombre = "";
             this.currentAviso.index = -1;
         },
 
@@ -332,16 +345,19 @@ export default {
             e.preventDefault();
             this.order.avisos[this.currentAviso.index].fecha = this.currentAviso.fecha;
             this.order.avisos[this.currentAviso.index].pagina = this.currentAviso.pagina;
-            this.currentAviso.fecha = ""
-            this.currentAviso.pagina = ""
+            this.order.avisos[this.currentAviso.index].nombre = this.currentAviso.nombre;
+            this.currentAviso.fecha = "";
+            this.currentAviso.pagina = "";
+            this.currentAviso.nombre = "";
             this.currentAviso.index = -1;
         },
 
         deleteAviso(e) {
             e.preventDefault();
             this.order.avisos.splice(this.currentAviso.index, 1);
-            this.currentAviso.fecha = ""
-            this.currentAviso.pagina = ""
+            this.currentAviso.fecha = "";
+            this.currentAviso.pagina = "";
+            this.currentAviso.nombre = "";
             this.currentAviso.index = -1;
         }
     }
