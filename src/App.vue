@@ -26,7 +26,7 @@
             </b-nav-item-dropdown>
             <div v-if="!currentUser">
               <b-nav-item to="/login"><font-awesome-icon icon="sign-in-alt" />Login</b-nav-item>
-              <b-nav-item to="/register"><font-awesome-icon icon="user-plus" />Sign Up</b-nav-item>
+              <!-- <b-nav-item to="/register"><font-awesome-icon icon="user-plus" hidden="true" />Sign Up</b-nav-item>--> 
             </div>
           </b-navbar-nav>
         </b-collapse>
